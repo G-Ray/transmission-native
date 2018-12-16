@@ -1,0 +1,3 @@
+[submodule "deps/transmission"]
+	path = deps/transmission
+	url = https://github.com/transmission/transmission.git
