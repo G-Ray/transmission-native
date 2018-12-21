@@ -1,4 +1,4 @@
-mkdir build && cd build
+mkdir deps/build && cd deps/build
 
 export CFLAGS="$CFLAGS -fPIC"
 export CXXFLAGS="$CXXFLAGS -fPIC"
@@ -29,3 +29,4 @@ cmake \
   ../transmission
 
 make
+cd ../..
