@@ -1,3 +1,6 @@
 [submodule "deps/transmission"]
 	path = deps/transmission
 	url = https://github.com/G-Ray/transmission.git
+[submodule "deps/openssl"]
+	path = deps/openssl
+	url = https://github.com/openssl/openssl.git

@@ -9,8 +9,9 @@
     "install": "node-gyp-build",
     "test": "standard && tape test.js",
     "prebuild": "prebuildify --napi --strip",
-    "fetch-transmission": "git submodule update --recursive --init",
-    "build-transmission": "./deps/build.sh"
+    "fetch-deps": "git submodule update --recursive --init",
+    "build-transmission": "./deps/build-transmission.sh",
+    "build-openssl": "./deps/build-openssl.sh"
   },
   "dependencies": {
     "napi-macros": "^1.8.2",

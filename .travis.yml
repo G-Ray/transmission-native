@@ -3,6 +3,7 @@ node_js:
   - "10"
 
 install:
-  - npm run fetch-transmission
+  - npm run fetch-deps
+  - npm run build-openssl
   - npm run build-transmission
   - npm i

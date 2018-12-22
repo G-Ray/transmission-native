@@ -1,9 +1,12 @@
-mkdir deps/build && cd deps/build
+mkdir deps/transmission/build
+cd deps/transmission/build
 
 export CFLAGS="$CFLAGS -fPIC"
 export CXXFLAGS="$CXXFLAGS -fPIC"
 
 cmake \
+  -DOPENSSL_ROOT_DIR=../openssl \
+  -DOPENSSL_USE_STATIC_LIBS=true \
   -DENABLE_DAEMON=OFF \
   -DENABLE_GTK=OFF \
   -DENABLE_QT=OFF \
@@ -26,7 +29,7 @@ cmake \
   -DWITH_INOTIFY=ON \
   -DWITH_KQUEUE=OFF \
   -DWITH_SYSTEMD=OFF \
-  ../transmission
+  ..
 
 make
-cd ../..
+cd ../../..
