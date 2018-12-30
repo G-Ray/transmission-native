@@ -9,13 +9,14 @@ class Transmission {
     tr.sessionClose()
   }
 
-  request (reqJson) {
-    const res = tr.request(Buffer.from(JSON.stringify(reqJson)))
-    const resJson = JSON.parse(res)
-
-    if (resJson.result !== 'success') throw new Error(resJson.result)
-
-    return resJson
+  request (reqJson, cb) {
+    const self = Buffer.alloc(tr.sizeof_tr_napi_t)
+    tr.request(self, Buffer.from(JSON.stringify(reqJson)), (err, res) => {
+      if (err) return cb(err)
+      const resJson = JSON.parse(res)
+      const e = (resJson.result !== 'success') ? new Error(resJson.result) : null
+      cb(e, resJson)
+    })
   }
 }
 

@@ -5,6 +5,7 @@
       "<!(node -e \"require('napi-macros')\")"
     ],
     "libraries": [
+      "-lcurl",
       "<(module_root_dir)/deps/openssl/libssl.a",
       "<(module_root_dir)/deps/openssl/libcrypto.a",
       "<(module_root_dir)/deps/transmission/build/libtransmission/libtransmission.a",

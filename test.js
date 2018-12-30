@@ -11,15 +11,40 @@ tape('sessionInit', t => {
 
 tape('request should succeed', t => {
   const req = { method: 'session-get' }
-  const json = tr.request(req)
-  t.equal(json.result, 'success')
-  t.end()
+  tr.request(req, (err, json) => {
+    t.error(err)
+    t.equal(json.result, 'success')
+    t.end()
+  })
 })
 
-tape('request should throw', t => {
+tape('request should return error', t => {
   const req = { method: 'unknown' }
-  t.throws(() => tr.request(req), RegExp('method name not recognized'))
-  t.end()
+  tr.request(req, (err, res) => {
+    t.equal(err.message, 'method name not recognized')
+    t.end()
+  })
+})
+
+tape('one async request', t => {
+  const req = { method: 'blocklist-update' }
+  tr.request(req, (err, res) => {
+    t.ok(err) // default blocklist url will 404
+    t.end()
+  })
+})
+
+tape('two async requests', t => {
+  t.plan(2)
+  let count = 0
+  const req = { method: 'blocklist-update' }
+
+  for (let i = 0; i < 2; i++) {
+    tr.request(req, (err, res) => {
+      t.ok(err) // default blocklist url will 404
+      if (++count === 2) t.end()
+    })
+  }
 })
 
 tape('sessionClose', t => {
