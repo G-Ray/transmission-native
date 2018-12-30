@@ -4,6 +4,6 @@ node_js:
 
 install:
   - npm run fetch-deps
-  - npm run build-openssl
+  # - npm run build-openssl
   - npm run build-transmission
   - npm i

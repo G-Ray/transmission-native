@@ -5,8 +5,6 @@ export CFLAGS="$CFLAGS -fPIC"
 export CXXFLAGS="$CXXFLAGS -fPIC"
 
 cmake \
-  -DOPENSSL_ROOT_DIR=../openssl \
-  -DOPENSSL_USE_STATIC_LIBS=true \
   -DENABLE_DAEMON=OFF \
   -DENABLE_GTK=OFF \
   -DENABLE_QT=OFF \
