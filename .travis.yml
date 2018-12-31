@@ -2,6 +2,14 @@ language: node_js
 node_js:
   - "10"
 
+before_install:
+  - wget https://www.openssl.org/source/openssl-1.1.1a.tar.gz
+  - tar xzvf openssl-1.1.1a.tar.gz > /dev/null
+  - cd openssl-1.1.1a
+  - ./config
+  - make > /dev/null
+  - sudo make install > /dev/null
+
 install:
   - npm run fetch-deps
   # - npm run build-openssl
