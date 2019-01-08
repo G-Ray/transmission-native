@@ -118,6 +118,11 @@ NAPI_METHOD(sessionInit) {
 
   session = tr_sessionInit(configDir, true, &settings);
 
+  tr_ctor* ctor = tr_ctorNew(session);
+  tr_torrent** torrents = tr_sessionLoadTorrents(session, ctor, NULL);
+  tr_free(torrents);
+  tr_ctorFree(ctor);
+
   tr_variantFree(&settings);
 
   return NULL;
