@@ -27,21 +27,23 @@ tape('request should return error', t => {
 })
 
 tape('one async request', t => {
-  const req = { method: 'blocklist-update' }
+  const req = { method: 'port-test' }
   tr.request(req, (err, res) => {
-    t.ok(err) // default blocklist url will 404
+    t.error(err)
+    t.ok(res)
     t.end()
   })
 })
 
 tape('two async requests', t => {
-  t.plan(2)
+  t.plan(4)
   let count = 0
-  const req = { method: 'blocklist-update' }
+  const req = { method: 'port-test' }
 
   for (let i = 0; i < 2; i++) {
     tr.request(req, (err, res) => {
-      t.ok(err) // default blocklist url will 404
+      t.error(err)
+      t.ok(res)
       if (++count === 2) t.end()
     })
   }
