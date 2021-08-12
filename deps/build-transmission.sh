@@ -1,5 +1,7 @@
 mkdir deps/transmission/build
-cd deps/transmission/build
+cd deps/transmission/third-party/libevent
+git checkout release-2.1.12-stable
+cd ../../build
 
 export CFLAGS="$CFLAGS -fPIC"
 export CXXFLAGS="$CXXFLAGS -fPIC"
