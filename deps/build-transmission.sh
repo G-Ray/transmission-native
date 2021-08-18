@@ -1,10 +1,16 @@
+export CFLAGS="$CFLAGS -fPIC"
+export CXXFLAGS="$CXXFLAGS -fPIC"
+
+mkdir deps/curl/build
+cd deps/curl/build
+cmake -DBUILD_SHARED_LIBS=OFF ..
+make
+cd ../../..
+
 mkdir deps/transmission/build
 cd deps/transmission/third-party/libevent
 git checkout release-2.1.12-stable
 cd ../../build
-
-export CFLAGS="$CFLAGS -fPIC"
-export CXXFLAGS="$CXXFLAGS -fPIC"
 
 cmake \
   -DENABLE_DAEMON=OFF \
@@ -29,6 +35,8 @@ cmake \
   -DWITH_INOTIFY=ON \
   -DWITH_KQUEUE=OFF \
   -DWITH_SYSTEMD=OFF \
+  -DCURL_LIBRARY=../../curl/build/lib/ \
+  -DCURL_INCLUDE_DIR=../../curl/include/ \
   ..
 
 make

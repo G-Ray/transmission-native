@@ -12,7 +12,7 @@
       "<(module_root_dir)/deps/transmission/build/third-party/miniupnpc/lib/libminiupnpc.a",
       "<(module_root_dir)/deps/transmission/build/third-party/natpmp/lib/libnatpmp.a",
       "<(module_root_dir)/deps/transmission/build/third-party/utp/lib/libutp.a",
-      "-lcurl"
+      "<(module_root_dir)/deps/curl/build/lib/libcurl.a",
     ],
     "sources": [
       "binding.c"

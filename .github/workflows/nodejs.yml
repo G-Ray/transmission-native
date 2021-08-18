@@ -24,7 +24,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: sudo apt install libcurl4-openssl-dev
     - run: npm run fetch-deps
     - run: npm run build-transmission
     - run: npm i
