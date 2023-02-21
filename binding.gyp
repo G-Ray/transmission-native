@@ -1,6 +1,7 @@
 {
   "targets": [{
     "target_name": "transmission_native",
+    "cflags_cc": ["-std=c++17"],
     "include_dirs": [
       "<!(node -e \"require('napi-macros')\")",
     ],
