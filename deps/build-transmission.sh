@@ -8,23 +8,20 @@ make
 cd ../../..
 
 mkdir deps/transmission/build
-cd deps/transmission/third-party/libevent
-git checkout release-2.1.12-stable
-cd ../../build
+cd deps/transmission/build
 
 cmake \
+  -DCMAKE_BUILD_TYPE=Release \
   -DENABLE_DAEMON=OFF \
   -DENABLE_GTK=OFF \
   -DENABLE_QT=OFF \
   -DENABLE_UTILS=OFF \
   -DENABLE_CLI=OFF \
   -DENABLE_TESTS=OFF \
-  -DENABLE_LIGHTWEIGHT=OFF \
   -DENABLE_UTP=ON \
   -DENABLE_NLS=OFF \
   -DINSTALL_DOC=OFF \
   -DINSTALL_LIB=OFF \
-  -DUSE_QT5=OFF \
   -DUSE_SYSTEM_EVENT2=OFF \
   -DUSE_SYSTEM_DHT=OFF \
   -DUSE_SYSTEM_MINIUPNPC=OFF \

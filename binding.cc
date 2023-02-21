@@ -3,6 +3,7 @@
 #include <node_api.h>
 #include <napi-macros.h>
 #include <uv.h>
+#include <string.h>
 
 #include "deps/transmission/libtransmission/transmission.h"
 #include "deps/transmission/libtransmission/rpcimpl.h"
@@ -37,18 +38,18 @@ typedef struct {
   napi_async_work _request;
   tr_variant request;
   tr_variant response;
-  const char* response_str;
+  char* response_str;
 } tr_napi_t;
 
 tr_session* session;
-char const* configDir;
+char* configDir;
 
 void rpc_response_func(tr_session* session, tr_variant* response, void* data) {
   tr_napi_t* self = (tr_napi_t*)(data);
 
   self->response = *response;
   tr_variantInitBool(response, false);
-  tr_variantFree(response);
+  tr_variantClear(response);
 
   uv_mutex_lock(&(self->_mutex));
   uv_cond_signal(&(self->_cond));
@@ -75,8 +76,8 @@ void Complete(napi_env env, napi_status status, void* data) {
 
   napi_call_function(env, global, callback, 2, argv, &result);
 
-  tr_variantFree(&(self->request));
-  tr_variantFree(&(self->response));
+  tr_variantClear(&(self->request));
+  tr_variantClear(&(self->response));
 
   uv_mutex_destroy(&(self->_mutex));
   uv_cond_destroy(&(self->_cond));
@@ -101,7 +102,9 @@ void Execute(napi_env env, void* data) {
   }
   uv_mutex_unlock(&(self->_mutex));
 
-  self->response_str = tr_variantToStr(&(self->response), TR_VARIANT_FMT_JSON, NULL);
+  std::string json(tr_variantToStr(&(self->response), TR_VARIANT_FMT_JSON));
+  self->response_str = new char[json.size()];
+  strcpy(self->response_str, json.c_str());
 }
 
 NAPI_METHOD(sessionInit) {
@@ -111,7 +114,9 @@ NAPI_METHOD(sessionInit) {
   tr_formatter_size_init(DISK_K, DISK_K_STR, DISK_M_STR, DISK_G_STR, DISK_T_STR);
   tr_formatter_speed_init(SPEED_K, SPEED_K_STR, SPEED_M_STR, SPEED_G_STR, SPEED_T_STR);
 
-  configDir = tr_getDefaultConfigDir(APP_NAME);
+  std::string defaultConfigDir = tr_getDefaultConfigDir(APP_NAME);
+  configDir = new char[defaultConfigDir.length() + 1];
+  strcpy(configDir, defaultConfigDir.c_str());
 
   tr_variantInitDict(&settings, 0);
   tr_sessionLoadSettings(&settings, configDir, APP_NAME);
@@ -119,11 +124,10 @@ NAPI_METHOD(sessionInit) {
   session = tr_sessionInit(configDir, true, &settings);
 
   tr_ctor* ctor = tr_ctorNew(session);
-  tr_torrent** torrents = tr_sessionLoadTorrents(session, ctor, NULL);
-  tr_free(torrents);
+  tr_sessionLoadTorrents(session, ctor);
   tr_ctorFree(ctor);
 
-  tr_variantFree(&settings);
+  tr_variantClear(&settings);
 
   return NULL;
 }
@@ -136,7 +140,7 @@ NAPI_METHOD(sessionClose) {
 
   tr_sessionClose(session);
 
-  tr_variantFree(&settings);
+  tr_variantClear(&settings);
 
   return NULL;
 }
@@ -149,7 +153,8 @@ NAPI_METHOD(request) {
 
   napi_value resource_name;
 
-  tr_variantFromJson(&(self->request), buf_json, buf_json_len);
+  std::string json_str = std::string(buf_json, buf_json_len);
+  tr_variantFromBuf(&(self->request), TR_VARIANT_PARSE_JSON, json_str);
   napi_create_string_utf8(env, "TrRequestResource", NAPI_AUTO_LENGTH, &resource_name);
 
   napi_create_async_work(env, NULL, resource_name, Execute, Complete, self, &(self->_request));
