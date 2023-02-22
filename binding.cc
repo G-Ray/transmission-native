@@ -12,24 +12,6 @@
 
 #define APP_NAME "transmission"
 
-#define MEM_K 1024
-#define MEM_K_STR "KiB"
-#define MEM_M_STR "MiB"
-#define MEM_G_STR "GiB"
-#define MEM_T_STR "TiB"
-
-#define DISK_K 1000
-#define DISK_K_STR "kB"
-#define DISK_M_STR "MB"
-#define DISK_G_STR "GB"
-#define DISK_T_STR "TB"
-
-#define SPEED_K 1000
-#define SPEED_K_STR "kB/s"
-#define SPEED_M_STR "MB/s"
-#define SPEED_G_STR "GB/s"
-#define SPEED_T_STR "TB/s"
-
 typedef struct {
   uv_mutex_t _mutex;
   uv_cond_t _cond;
@@ -109,10 +91,6 @@ void Execute(napi_env env, void* data) {
 
 NAPI_METHOD(sessionInit) {
   tr_variant settings;
-
-  tr_formatter_mem_init(MEM_K, MEM_K_STR, MEM_M_STR, MEM_G_STR, MEM_T_STR);
-  tr_formatter_size_init(DISK_K, DISK_K_STR, DISK_M_STR, DISK_G_STR, DISK_T_STR);
-  tr_formatter_speed_init(SPEED_K, SPEED_K_STR, SPEED_M_STR, SPEED_G_STR, SPEED_T_STR);
 
   std::string defaultConfigDir = tr_getDefaultConfigDir(APP_NAME);
   configDir = new char[defaultConfigDir.length() + 1];
