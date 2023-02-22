@@ -13,12 +13,12 @@
     "build-transmission": "./deps/build-transmission.sh"
   },
   "dependencies": {
-    "napi-macros": "^2.0.0",
-    "node-gyp-build": "^4.1.0"
+    "napi-macros": "^2.2.2",
+    "node-gyp-build": "^4.6.0"
   },
   "devDependencies": {
-    "prebuildify": "^3.0.4",
-    "standard": "^14.0.0",
-    "tape": "^4.11.0"
+    "prebuildify": "^5.0.1",
+    "standard": "^17.0.0",
+    "tape": "^5.6.3"
   }
 }
