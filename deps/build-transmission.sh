@@ -1,6 +1,8 @@
 export CFLAGS="$CFLAGS -fPIC"
 export CXXFLAGS="$CXXFLAGS -fPIC"
 
+NPROCESSORS=$( getconf _NPROCESSORS_ONLN )
+
 mkdir deps/transmission/build
 cd deps/transmission/build
 
@@ -30,5 +32,5 @@ cmake \
   -DWITH_SYSTEMD=OFF \
   ..
 
-make
+make -j $NPROCESSORS
 cd ../../..
