@@ -17,7 +17,7 @@
       "<(module_root_dir)/deps/transmission/build/third-party/psl/lib/libpsl.a",
       "<(module_root_dir)/deps/transmission/build/third-party/utp/lib/libutp.a",
       "<(module_root_dir)/deps/transmission/build/third-party/wildmat/libwildmat.a",
-      "<(module_root_dir)/deps/curl/build/lib/libcurl.a"
+      "-lcurl"
     ],
     "sources": [
       "binding.cc"
