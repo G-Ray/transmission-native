@@ -1,12 +1,10 @@
 const tr = require('./binding')
 
 class Transmission {
-  constructor () {
+  constructor (configDir = 'transmission', appName = 'transmission') {
     this.set = new Set()
-  }
-
-  init () {
-    tr.sessionInit()
+    // NOTE: we append the buffer with a null character to delimitate the C string
+    tr.sessionInit(Buffer.from(configDir + '\0'), Buffer.from(appName + '\0'))
   }
 
   close () {
