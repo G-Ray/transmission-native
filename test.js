@@ -1,11 +1,23 @@
 const tape = require('tape')
 const Transmission = require('./index')
+const os = require('os')
+const path = require('path')
+const fs = require('fs')
 
-const tr = new Transmission()
+const tmpDir = path.join(os.tmpdir(), 'transmission-native')
 
-tape('sessionInit', t => {
-  tr.init()
-  t.pass('did not crash')
+const removeTmpDir = () => {
+  if (fs.existsSync(tmpDir)) {
+    console.log('🗑️ Removing tmp folder...')
+    fs.rmSync(tmpDir, { recursive: true })
+  }
+}
+
+let tr
+
+tape('setup', (t) => {
+  removeTmpDir() // In case tmp folder already exist
+  tr = new Transmission(tmpDir, 'transmission')
   t.end()
 })
 
@@ -54,3 +66,10 @@ tape('sessionClose', t => {
   t.pass('did not crash')
   t.end()
 })
+
+tape('teardown', (t) => {
+  removeTmpDir()
+  t.end()
+})
+
+tape.onFailure(removeTmpDir)

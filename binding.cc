@@ -10,8 +10,6 @@
 #include "deps/transmission/libtransmission/utils.h"
 #include "deps/transmission/libtransmission/variant.h"
 
-#define APP_NAME "transmission"
-
 typedef struct {
   uv_mutex_t _mutex;
   uv_cond_t _cond;
@@ -90,14 +88,20 @@ void Execute(napi_env env, void* data) {
 }
 
 NAPI_METHOD(sessionInit) {
+  NAPI_ARGV(2)
+  NAPI_ARGV_BUFFER(configDirBuffer, 0)
+  NAPI_ARGV_BUFFER(appNameBuffer, 1)
+
+  configDir = new char[configDirBuffer_len];
+  strcpy(configDir, configDirBuffer);
+  
+  char* appName = new char[appNameBuffer_len];
+  strcpy(appName, appNameBuffer);
+
   tr_variant settings;
 
-  std::string defaultConfigDir = tr_getDefaultConfigDir(APP_NAME);
-  configDir = new char[defaultConfigDir.length() + 1];
-  strcpy(configDir, defaultConfigDir.c_str());
-
   tr_variantInitDict(&settings, 0);
-  tr_sessionLoadSettings(&settings, configDir, APP_NAME);
+  tr_sessionLoadSettings(&settings, configDir, appName);
 
   session = tr_sessionInit(configDir, true, &settings);
 
