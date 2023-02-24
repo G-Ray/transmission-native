@@ -1,6 +1,6 @@
 const os = require('os')
 const fs = require('fs')
-const path = require('path')
+const path = require('node:path')
 const assert = require('node:assert/strict')
 const { describe, before, beforeEach, afterEach, it } = require('node:test')
 
