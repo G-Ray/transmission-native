@@ -11,12 +11,19 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
     - name: Install libcurl4-openssl-dev
       run: sudo apt install -y libcurl4-openssl-dev
+      if: ${{ matrix.os == 'ubuntu-latest' }}
+    - name: export PKG_CONFIG_PATH for MacOS
+      run: export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig/
+      if: ${{ matrix.os == 'macos-latest' }}
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
