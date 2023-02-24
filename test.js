@@ -65,7 +65,7 @@ describe('transmission-native tests', async () => {
 
 const removeTmpDir = () => {
   if (fs.existsSync(tmpDir)) {
-    console.log('🗑️ Removing tmp folder...')
+    console.log('Removing tmp folder...')
     fs.rmSync(tmpDir, { recursive: true })
   }
 }
