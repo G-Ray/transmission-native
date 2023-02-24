@@ -30,6 +30,13 @@ tape('request should succeed', t => {
   })
 })
 
+tape('request should succeed with promise api', async (t) => {
+  const req = { method: 'session-get' }
+  const json = await tr.request(req)
+  t.equal(json.result, 'success')
+  t.end()
+})
+
 tape('request should return error', t => {
   const req = { method: 'unknown' }
   tr.request(req, (err, res) => {
