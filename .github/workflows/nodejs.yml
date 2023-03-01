@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: Build, test, and upload prebuilds
 
 on:
   push:
@@ -11,7 +11,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
@@ -25,5 +28,8 @@ jobs:
     - run: npm run build-transmission
     - run: npm i
     - run: npm test
-      env:
-        CI: true
+    - run: npm run prebuild
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.os }}
+        path: ./prebuilds
