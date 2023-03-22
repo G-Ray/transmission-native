@@ -83,6 +83,7 @@ void Execute(napi_env env, void* data) {
   uv_mutex_unlock(&(self->_mutex));
 
   std::string json(tr_variantToStr(&(self->response), TR_VARIANT_FMT_JSON));
+  // Note: do not forget + 1 for NULL character
   self->response_str = new char[json.size() + 1];
   strcpy(self->response_str, json.c_str());
 }
