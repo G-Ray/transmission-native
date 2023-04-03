@@ -6,7 +6,8 @@ Native bindings for libtransmission.
 
 ## Installation
 
-The package is not yet published to npm. Please refer to [development](#development).
+The npm package offers prebuilt binaries only for Linux x64 for now.
+Please refer to [development](#development) for other systems.
 
 ## Usage
 
@@ -27,7 +28,7 @@ const message = {
     }
 }
 
-const reponse = await tr.request(messages)
+const reponse = await tr.request(message)
 console.log(response)
 
 // Later, when the process should be stopped, close the instance before
@@ -52,7 +53,7 @@ Make a request to the transmission instance.
 ```js
 const message = { method: 'session-get' }
 
-const reponse = await tr.request(messages)
+const reponse = await tr.request(message)
 console.log(response)
 
 // or as a callback
