@@ -10,7 +10,7 @@
     "test": "standard && node --test test.js",
     "prebuild": "prebuildify --napi --strip",
     "fetch-deps": "git submodule update --recursive --init",
-    "build-transmission": "./scripts/build-transmission.js"
+    "build-transmission": "node ./scripts/build-transmission.js"
   },
   "dependencies": {
     "napi-macros": "^2.2.2",

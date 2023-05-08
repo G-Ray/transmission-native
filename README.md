@@ -65,10 +65,22 @@ tr.request(message, (err, response) => {
 
 ## Development
 
-You'll need to install required build tools and libraries for your platform in order to compile libtransmission.
+You'll need to install required build tools and libraries for your platform in order to compile libtransmission:
+
+## Fedora / RHEL
+```sh
+sudo dnf install cmake gcc-c++ libcurl-devel openssl-devel
+```
+
+## Windows
+```sh
+vcpkg install curl --triplet=x64-windows-static
+vcpkg install openssl --triplet=x64-windows
+```
 
 ```sh
 npm run fetch-deps
+# For Windows you need to set VCPKG_INSTALLATION_ROOT env variable
 npm run build-transmission
 npm install
 npm test # optional
