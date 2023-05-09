@@ -23,13 +23,15 @@ describe('transmission-native tests', async () => {
     removeTmpDir()
   })
 
-  it('request should succeed with callback', (done) => {
-    const req = { method: 'session-get' }
+  it('request should succeed with callback', () => {
+    return new Promise((resolve, reject) => {
+      const req = { method: 'session-get' }
 
-    tr.request(req, (err, json) => {
-      if (err) done(err)
-      assert.equal(json.result, 'success')
-      done()
+      tr.request(req, (err, json) => {
+        if (err) return reject(err)
+        assert.equal(json.result, 'success')
+        resolve()
+      })
     })
   })
 
