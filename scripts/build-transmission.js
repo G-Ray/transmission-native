@@ -4,8 +4,6 @@ const fs = require('node:fs')
 const path = require('node:path')
 const { spawn } = require('node:child_process')
 
-const env = { ...process.env }
-
 const NPROCESSORS = os.availableParallelism()
 const COMMON_CMAKE_FLAGS = [
   '-DCMAKE_BUILD_TYPE=Release',
@@ -30,6 +28,9 @@ const COMMON_CMAKE_FLAGS = [
   '-DWITH_CRYPTO=openssl'
 ]
 
+const { env } = process
+const buildPath = path.join(__dirname, '../deps/transmission/build')
+
 const runCommand = async (command, args = [], options = {}) => {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, { stdio: 'inherit', ...options })
@@ -37,8 +38,6 @@ const runCommand = async (command, args = [], options = {}) => {
     child.on('error', reject)
   })
 }
-
-const buildPath = path.join(__dirname, '../deps/transmission/build')
 
 if (!fs.existsSync(buildPath)) {
   fs.mkdirSync(buildPath)
@@ -64,14 +63,14 @@ const build = async () => {
 
     const flags = [
       ...COMMON_CMAKE_FLAGS,
-        // Set vcpkg toolchain file path
-        `-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}\\scripts\\buildsystems\\vcpkg.cmake`,
-        // Set include and lib dir paths to static libcurl
-        `-DCURL_INCLUDE_DIR=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/include`,
-        `-DCURL_LIBRARY=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/lib`,
-        // Use static version of the run-time library
-        '-DCMAKE_C_FLAGS_RELEASE=/MT',
-        '-DCMAKE_CXX_FLAGS_RELEASE=/MT'
+      // Set vcpkg toolchain file path
+      `-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}\\scripts\\buildsystems\\vcpkg.cmake`,
+      // Set include and lib dir paths to static libcurl
+      `-DCURL_INCLUDE_DIR=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/include`,
+      `-DCURL_LIBRARY=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/lib`,
+      // Use static version of the run-time library
+      '-DCMAKE_C_FLAGS_RELEASE=/MT',
+      '-DCMAKE_CXX_FLAGS_RELEASE=/MT'
     ]
 
     await runCommand('cmake', [...flags, '..'], { cwd: buildPath, env })
