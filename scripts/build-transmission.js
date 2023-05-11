@@ -39,6 +39,8 @@ const runCommand = async (command, args = [], options = {}) => {
   })
 }
 
+const cmake = (...args) => runCommand('cmake', ...args)
+
 if (!fs.existsSync(buildPath)) {
   fs.mkdirSync(buildPath)
 }
@@ -53,8 +55,8 @@ const build = async () => {
       '-DCMAKE_CXX_FLAGS=-fPIC'
     ]
 
-    await runCommand('cmake', [...flags, '..'], { cwd: buildPath, env })
-    await runCommand('cmake', ['--build', buildPath, `-j${NPROCESSORS}`], { env })
+    await cmake([...flags, '..'], { cwd: buildPath, env })
+    await cmake(['--build', buildPath, `-j${NPROCESSORS}`], { env })
   } else if (osType === 'Windows_NT') {
     const { VCPKG_INSTALLATION_ROOT } = process.env
     if (!VCPKG_INSTALLATION_ROOT) {
@@ -73,8 +75,8 @@ const build = async () => {
       '-DCMAKE_CXX_FLAGS_RELEASE=/MT'
     ]
 
-    await runCommand('cmake', [...flags, '..'], { cwd: buildPath, env })
-    await runCommand('cmake', ['--build', buildPath, '--config', 'Release', `-j${NPROCESSORS}`], { env })
+    await cmake([...flags, '..'], { cwd: buildPath, env })
+    await cmake(['--build', buildPath, '--config', 'Release', `-j${NPROCESSORS}`], { env })
   } else {
     console.log('Unsupported os type:', osType)
   }
