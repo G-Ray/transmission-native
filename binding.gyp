@@ -5,19 +5,47 @@
     "include_dirs": [
       "<!(node -e \"require('napi-macros')\")",
     ],
-    "libraries": [
-      "<(module_root_dir)/deps/transmission/build/libtransmission/libtransmission.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/dht.bld/pfx/lib/libdht.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/jsonsl/libjsonsl.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/libb64.bld/src/libb64.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/libdeflate.bld/pfx/lib/libdeflate.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/libevent.bld/pfx/lib/libevent.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/libnatpmp.bld/pfx/lib/libnatpmp.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/libpsl.bld/pfx/lib/libpsl.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/libutp.bld/libutp.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/miniupnpc.bld/pfx/lib/libminiupnpc.a",
-      "<(module_root_dir)/deps/transmission/build/third-party/wildmat/libwildmat.a",
-      "-lcurl"
+    "conditions": [
+      ['OS=="linux"', {
+        "libraries": [
+          "<(module_root_dir)/deps/transmission/build/libtransmission/libtransmission.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/dht.bld/pfx/lib/libdht.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/jsonsl/libjsonsl.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/libb64.bld/src/libb64.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/libdeflate.bld/pfx/lib/libdeflate.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/libevent.bld/pfx/lib/libevent.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/libnatpmp.bld/pfx/lib/libnatpmp.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/libpsl.bld/pfx/lib/libpsl.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/libutp.bld/libutp.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/miniupnpc.bld/pfx/lib/libminiupnpc.a",
+          "<(module_root_dir)/deps/transmission/build/third-party/wildmat/libwildmat.a",
+          "-lcurl"
+        ],
+      }],
+      ['OS=="win"', {
+        'msvs_settings': {
+          'VCLinkerTool': {
+            'AdditionalOptions': [ '/NODEFAULTLIB:LIBCMT' ],
+          },
+        },
+        "libraries": [
+          "<(module_root_dir)/deps/transmission/build/libtransmission/Release/transmission.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/dht.bld/pfx/lib/dht.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/jsonsl/Release/jsonsl.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/libb64.bld/src/Release/b64.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/libdeflate.bld/pfx/lib/deflatestatic.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/libevent.bld/pfx/lib/event.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/libnatpmp.bld/pfx/lib/natpmp.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/libpsl.bld/pfx/lib/psl.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/libutp.bld/Release/utp.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/miniupnpc.bld/pfx/lib/miniupnpc.lib",
+          "<(module_root_dir)/deps/transmission/build/third-party/wildmat/Release/wildmat.lib",
+          "$(VCPKG_INSTALLATION_ROOT)/installed/x64-windows-static/lib/libcurl.lib",
+          "-lws2_32.lib",
+          "-lCrypt32.lib",
+          "-lIphlpapi.lib"
+        ]
+      }],
     ],
     "sources": [
       "binding.cc"
