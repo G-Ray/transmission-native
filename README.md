@@ -65,18 +65,22 @@ tr.request(message, (err, response) => {
 
 ## Development
 
+### Depencencies
+
 You'll need to install required build tools and libraries for your platform in order to compile libtransmission:
 
-## Fedora / RHEL
-```sh
-sudo dnf install cmake gcc-c++ libcurl-devel openssl-devel
-```
+- Fedora / RHEL
+  ```sh
+  sudo dnf install cmake gcc-c++ libcurl-devel openssl-devel
+  ```
 
-## Windows
-```sh
-vcpkg install curl --triplet=x64-windows-static
-vcpkg install openssl --triplet=x64-windows
-```
+- Windows
+  ```sh
+  vcpkg install curl --triplet=x64-windows-static
+  vcpkg install openssl --triplet=x64-windows
+  ```
+
+### Build from sources
 
 ```sh
 npm run fetch-deps

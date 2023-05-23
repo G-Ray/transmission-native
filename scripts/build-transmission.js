@@ -48,37 +48,53 @@ if (!fs.existsSync(buildPath)) {
 const build = async () => {
   const osType = os.type()
 
-  if (osType === 'Linux') {
-    const flags = [
-      ...COMMON_CMAKE_FLAGS,
-      '-DCMAKE_C_FLAGS=-fPIC',
-      '-DCMAKE_CXX_FLAGS=-fPIC'
-    ]
+  switch (osType) {
+    case 'Linux': {
+      const flags = [
+        ...COMMON_CMAKE_FLAGS,
+        '-DCMAKE_C_FLAGS=-fPIC',
+        '-DCMAKE_CXX_FLAGS=-fPIC'
+      ]
 
-    await cmake([...flags, '..'], { cwd: buildPath, env })
-    await cmake(['--build', buildPath, `-j${NPROCESSORS}`], { env })
-  } else if (osType === 'Windows_NT') {
-    const { VCPKG_INSTALLATION_ROOT } = process.env
-    if (!VCPKG_INSTALLATION_ROOT) {
-      throw new Error('Please set VCPKG_INSTALLATION_ROOT env var')
+      await cmake([...flags, '..'], { cwd: buildPath, env })
+      await cmake(['--build', buildPath, `-j${NPROCESSORS}`], { env })
     }
+      break
+    case 'Windows_NT': {
+      const { VCPKG_INSTALLATION_ROOT } = process.env
+      if (!VCPKG_INSTALLATION_ROOT) {
+        throw new Error('Please set VCPKG_INSTALLATION_ROOT env var')
+      }
 
-    const flags = [
-      ...COMMON_CMAKE_FLAGS,
-      // Set vcpkg toolchain file path
-      `-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}\\scripts\\buildsystems\\vcpkg.cmake`,
-      // Set include and lib dir paths to static libcurl
-      `-DCURL_INCLUDE_DIR=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/include`,
-      `-DCURL_LIBRARY=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/lib`,
-      // Use static version of the run-time library
-      '-DCMAKE_C_FLAGS_RELEASE=/MT',
-      '-DCMAKE_CXX_FLAGS_RELEASE=/MT'
-    ]
+      const flags = [
+        ...COMMON_CMAKE_FLAGS,
+        // Set vcpkg toolchain file path
+        `-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}\\scripts\\buildsystems\\vcpkg.cmake`,
+        // Set include and lib dir paths to static libcurl
+        `-DCURL_INCLUDE_DIR=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/include`,
+        `-DCURL_LIBRARY=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/lib`,
+        // Use static version of the run-time library
+        '-DCMAKE_C_FLAGS_RELEASE=/MT',
+        '-DCMAKE_CXX_FLAGS_RELEASE=/MT'
+      ]
 
-    await cmake([...flags, '..'], { cwd: buildPath, env })
-    await cmake(['--build', buildPath, '--config', 'Release', `-j${NPROCESSORS}`], { env })
-  } else {
-    console.log('Unsupported os type:', osType)
+      await cmake([...flags, '..'], { cwd: buildPath, env })
+      await cmake(['--build', buildPath, '--config', 'Release', `-j${NPROCESSORS}`], { env })
+    }
+      break
+    case 'Darwin': {
+      const flags = [
+        ...COMMON_CMAKE_FLAGS,
+        '-DRUN_CLANG_TIDY=OFF'
+      ]
+
+      await cmake([...flags, '..'], { cwd: buildPath, env })
+      await cmake(['--build', buildPath, '-j', NPROCESSORS], { env })
+    }
+      break
+    default: {
+      console.log('Unsupported os type:', osType)
+    }
   }
 }
 
