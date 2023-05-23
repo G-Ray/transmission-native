@@ -13,7 +13,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [macos-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -38,11 +38,6 @@ jobs:
           vcpkg install curl --triplet=x64-windows-static
           vcpkg install openssl --triplet=x64-windows
       if: ${{ matrix.os == 'windows-latest' }}
-    - name: Install macos deps
-      run: |
-        export OPENSSL_ROOT_DIR=$(brew --prefix openssl@1.1)
-        export PATH="$OPENSSL_ROOT_DIR:$PATH"
-      if: ${{ matrix.os == 'macos-latest' }}
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:

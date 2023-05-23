@@ -2,7 +2,7 @@
 const os = require('node:os')
 const fs = require('node:fs')
 const path = require('node:path')
-const { spawn } = require('node:child_process')
+const { spawn, execSync } = require('node:child_process')
 
 const NPROCESSORS = os.availableParallelism()
 const COMMON_CMAKE_FLAGS = [
@@ -83,9 +83,11 @@ const build = async () => {
     }
       break
     case 'Darwin': {
+      const OPENSSL_ROOT_DIR = execSync('brew --prefix openssl@1.1', { encoding: 'utf8' }).trim();
       const flags = [
         ...COMMON_CMAKE_FLAGS,
-        '-DRUN_CLANG_TIDY=OFF'
+        '-DRUN_CLANG_TIDY=OFF',
+        '-DOPENSSL_ROOT_DIR=' + OPENSSL_ROOT_DIR
       ]
 
       await cmake([...flags, '..'], { cwd: buildPath, env })
