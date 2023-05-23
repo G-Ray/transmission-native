@@ -84,7 +84,7 @@ const build = async () => {
       break
     case 'Darwin': {
       const OPENSSL_ROOT_DIR = execSync(
-        'brew --prefix openssl@1.1',
+        'brew --prefix openssl',
         { encoding: 'utf8' }).trim()
       const flags = [
         ...COMMON_CMAKE_FLAGS,
