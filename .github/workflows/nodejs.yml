@@ -34,9 +34,7 @@ jobs:
       run: sudo apt update && sudo apt install -y libcurl4-openssl-dev
       if: ${{ matrix.os == 'ubuntu-latest' }}
     - name: Install windows deps
-      run: |
-          vcpkg install curl --triplet=x64-windows-static
-          vcpkg install openssl --triplet=x64-windows
+      run: vcpkg install curl openssl --triplet=x64-windows-static
       if: ${{ matrix.os == 'windows-latest' }}
     - name: Use Node.js
       uses: actions/setup-node@v3

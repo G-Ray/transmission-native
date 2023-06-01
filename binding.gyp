@@ -41,6 +41,8 @@
           "<(module_root_dir)/deps/transmission/build/third-party/miniupnpc.bld/pfx/lib/miniupnpc.lib",
           "<(module_root_dir)/deps/transmission/build/third-party/wildmat/Release/wildmat.lib",
           "$(VCPKG_INSTALLATION_ROOT)/installed/x64-windows-static/lib/libcurl.lib",
+          "$(VCPKG_INSTALLATION_ROOT)/installed/x64-windows-static/lib/libcrypto.lib",
+          "$(VCPKG_INSTALLATION_ROOT)/installed/x64-windows-static/lib/libssl.lib",
           "-lws2_32.lib",
           "-lCrypt32.lib",
           "-lIphlpapi.lib"
