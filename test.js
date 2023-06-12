@@ -44,8 +44,8 @@ describe('transmission-native tests', async () => {
 
   it('request should return error', async () => {
     const req = { method: 'unknown' }
-
-    await assert.rejects(tr.request(req), { message: 'method name not recognized' })
+    const res = await tr.request(req)
+    assert.equal(res.result, 'method name not recognized')
   })
 
   it('one async request', async () => {

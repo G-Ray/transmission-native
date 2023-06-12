@@ -31,9 +31,8 @@ class Transmission {
     tr.request(self, Buffer.from(JSON.stringify(reqJson)), (err, res) => {
       if (err) return cb(err)
       const resJson = JSON.parse(res)
-      const e = (resJson.result !== 'success') ? new Error(resJson.result) : null
       this.set.delete(self)
-      cb(e, resJson)
+      cb(null, resJson)
     })
   }
 }
