@@ -23,11 +23,6 @@
         ],
       }],
       ['OS=="win"', {
-        'msvs_settings': {
-          'VCLinkerTool': {
-            'AdditionalOptions': [ '/NODEFAULTLIB:LIBCMT' ],
-          },
-        },
         "libraries": [
           "<(module_root_dir)/deps/transmission/build/libtransmission/Release/transmission.lib",
           "<(module_root_dir)/deps/transmission/build/third-party/dht.bld/pfx/lib/dht.lib",
@@ -43,9 +38,9 @@
           "$(VCPKG_INSTALLATION_ROOT)/installed/x64-windows-static/lib/libcurl.lib",
           "$(VCPKG_INSTALLATION_ROOT)/installed/x64-windows-static/lib/libcrypto.lib",
           "$(VCPKG_INSTALLATION_ROOT)/installed/x64-windows-static/lib/libssl.lib",
-          "-lws2_32.lib",
-          "-lCrypt32.lib",
-          "-lIphlpapi.lib"
+          "ws2_32.lib",
+          "Crypt32.lib",
+          "Iphlpapi.lib",
         ]
       }],
     ],
