@@ -168,9 +168,20 @@ NAPI_METHOD(request) {
   return NULL;
 }
 
+NAPI_METHOD(saveSettings) {
+  tr_variant settings;
+
+  tr_variantInitDict(&settings, 0);
+  tr_sessionSaveSettings(session, configDir, &settings);
+  tr_variantClear(&settings);
+
+  return NULL;
+}
+
 NAPI_INIT() {
   NAPI_EXPORT_SIZEOF(tr_napi_t)
   NAPI_EXPORT_FUNCTION(sessionInit)
   NAPI_EXPORT_FUNCTION(sessionClose)
   NAPI_EXPORT_FUNCTION(request)
+  NAPI_EXPORT_FUNCTION(saveSettings)
 }
