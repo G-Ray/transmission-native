@@ -106,6 +106,14 @@ void Execute(napi_env env, void* data) {
   strcpy(self->response_str, json.c_str());
 }
 
+void saveSettings() {
+  tr_variant settings;
+
+  tr_variantInitDict(&settings, 0);
+  tr_sessionSaveSettings(session, configDir, &settings);
+  tr_variantClear(&settings);
+}
+
 NAPI_METHOD(sessionInit) {
   NAPI_ARGV(2)
   NAPI_ARGV_BUFFER(configDirBuffer, 0)
@@ -138,14 +146,9 @@ NAPI_METHOD(sessionInit) {
 }
 
 NAPI_METHOD(sessionClose) {
-  tr_variant settings;
-
-  tr_variantInitDict(&settings, 0);
-  tr_sessionSaveSettings(session, configDir, &settings);
+  saveSettings();
 
   tr_sessionClose(session);
-
-  tr_variantClear(&settings);
 
   return NULL;
 }
@@ -169,11 +172,7 @@ NAPI_METHOD(request) {
 }
 
 NAPI_METHOD(saveSettings) {
-  tr_variant settings;
-
-  tr_variantInitDict(&settings, 0);
-  tr_sessionSaveSettings(session, configDir, &settings);
-  tr_variantClear(&settings);
+  saveSettings();
 
   return NULL;
 }
