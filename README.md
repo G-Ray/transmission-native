@@ -31,6 +31,9 @@ const message = {
 const reponse = await tr.request(message)
 console.log(response)
 
+// Save settings
+tr.saveSettings()
+
 // Later, when the process should be stopped, close the instance before
 tr.close()
 ```
@@ -62,6 +65,14 @@ tr.request(message, (err, response) => {
   console.log(response)
 })
 ```
+
+### `tr.saveSettings()`
+
+Save transmission settings.
+
+### `tr.close()`
+
+Save settings and close the session.
 
 ## Development
 
