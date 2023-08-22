@@ -72,10 +72,10 @@ const build = async () => {
       `-DCURL_LIBRARY=${VCPKG_INSTALLATION_ROOT}/packages/curl_x64-windows-static/lib/libcurl.lib`,
       `-DOPENSSL_ROOT_DIR=${VCPKG_INSTALLATION_ROOT}/packages/openssl_x64-windows-static`,
       // Use static version of the run-time library
-      '-DCMAKE_C_FLAGS=/MT',
-      '-DCMAKE_CXX_FLAGS=/MT',
-      '-DCMAKE_C_FLAGS_RELEASE=/MT',
-      '-DCMAKE_CXX_FLAGS_RELEASE=/MT'
+      '-DCMAKE_C_FLAGS=/MT /MP',
+      '-DCMAKE_CXX_FLAGS=/MT /MP',
+      '-DCMAKE_C_FLAGS_RELEASE=/MT /MP',
+      '-DCMAKE_CXX_FLAGS_RELEASE=/MT /MP'
     ]
 
     await cmake([...flags, '..'], { cwd: buildPath, env })
