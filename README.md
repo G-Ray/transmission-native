@@ -92,6 +92,7 @@ vcpkg install openssl --triplet=x64-windows
 ```sh
 npm run fetch-deps
 # For Windows you need to set VCPKG_INSTALLATION_ROOT env variable
+# $Env:VCPKG_INSTALLATION_ROOT="PATH_TO_VCPKG"
 npm run build-transmission
 npm install
 npm test # optional
