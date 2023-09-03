@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-x64:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -27,10 +27,10 @@ jobs:
         path: ${{ env.VCPKG_INSTALLATION_ROOT }}
         key: ${{ runner.os }}-${{ env.cache-name }}
       if: ${{ matrix.os == 'windows-latest' }}
-
     - name: Install linux deps
       run: sudo apt update && sudo apt install -y libcurl4-openssl-dev
       if: ${{ matrix.os == 'ubuntu-latest' }}
+
     - name: Install windows deps
       run: vcpkg install curl openssl --triplet=x64-windows-static
       if: ${{ matrix.os == 'windows-latest' }}
@@ -47,3 +47,36 @@ jobs:
       with:
         name: ${{ matrix.os }}
         path: ./prebuilds
+  build-aarch64:
+    # The host should always be Linux
+    runs-on: ubuntu-latest
+    name: Build on aarch64
+    steps:
+      - uses: actions/checkout@v3
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        with:
+          arch: aarch64
+          distro: ubuntu_latest
+          run: |
+            # install deps
+            apt update
+            apt install -y libcurl4-openssl-dev git cmake build-essential libssl-dev
+            # Install nodejs
+            apt install -y ca-certificates curl gnupg
+            mkdir -p /etc/apt/keyrings
+            curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+            echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+            apt update
+            apt install -y nodejs
+            # Build
+            git config --global --add safe.directory '*'
+            npm run fetch-deps
+            npm run build-transmission
+            npm i
+            npm test
+            npm run prebuild-arm64
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ubuntu-latest
+          path: ./prebuilds
