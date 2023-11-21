@@ -63,6 +63,17 @@ describe('transmission-native tests', async () => {
     assert.equal(results[0].result, 'success')
     assert.equal(results[1].result, 'success')
   })
+
+  it('settings should be saved', async () => {
+    let exists = fs.existsSync(path.join(tmpDir, 'settings.json'))
+    assert.equal(exists, false)
+
+    tr.saveSettings()
+
+    // Settings.json should now be saved
+    exists = fs.existsSync(path.join(tmpDir, 'settings.json'))
+    assert.equal(exists, true)
+  })
 })
 
 const removeTmpDir = () => {

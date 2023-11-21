@@ -35,6 +35,10 @@ class Transmission {
       cb(null, resJson)
     })
   }
+
+  saveSettings () {
+    tr.saveSettings()
+  }
 }
 
 module.exports = Transmission

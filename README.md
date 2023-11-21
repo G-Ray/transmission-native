@@ -31,6 +31,9 @@ const message = {
 const reponse = await tr.request(message)
 console.log(response)
 
+// Save settings
+tr.saveSettings()
+
 // Later, when the process should be stopped, close the instance before
 tr.close()
 ```
@@ -63,6 +66,14 @@ tr.request(message, (err, response) => {
 })
 ```
 
+### `tr.saveSettings()`
+
+Save transmission settings.
+
+### `tr.close()`
+
+Save settings and close the session.
+
 ## Development
 
 ### Depencencies
@@ -85,6 +96,7 @@ You'll need to install required build tools and libraries for your platform in o
 ```sh
 npm run fetch-deps
 # For Windows you need to set VCPKG_INSTALLATION_ROOT env variable
+# $Env:VCPKG_INSTALLATION_ROOT="PATH_TO_VCPKG"
 npm run build-transmission
 npm install
 npm test # optional

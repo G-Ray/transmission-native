@@ -69,15 +69,16 @@ const build = async () => {
       const flags = [
         ...COMMON_CMAKE_FLAGS,
         // Set vcpkg toolchain file path
-        `-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}\\scripts\\buildsystems\\vcpkg.cmake`,
+        `-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake`,
         // Set include and lib dir paths to static libcurl
-        `-DCURL_INCLUDE_DIR=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/include`,
-        `-DCURL_LIBRARY=${VCPKG_INSTALLATION_ROOT}\\packages/curl_x64-windows-static/lib`,
+        `-DCURL_INCLUDE_DIR=${VCPKG_INSTALLATION_ROOT}/packages/curl_x64-windows-static/include`,
+        `-DCURL_LIBRARY=${VCPKG_INSTALLATION_ROOT}/packages/curl_x64-windows-static/lib/libcurl.lib`,
+        `-DOPENSSL_ROOT_DIR=${VCPKG_INSTALLATION_ROOT}/packages/openssl_x64-windows-static`,
         // Use static version of the run-time library
-        '-DCMAKE_C_FLAGS=/MT',
-        '-DCMAKE_CXX_FLAGS=/MT',
-        '-DCMAKE_C_FLAGS_RELEASE=/MT',
-        '-DCMAKE_CXX_FLAGS_RELEASE=/MT'
+        '-DCMAKE_C_FLAGS=/MT /MP',
+        '-DCMAKE_CXX_FLAGS=/MT /MP',
+        '-DCMAKE_C_FLAGS_RELEASE=/MT /MP',
+        '-DCMAKE_CXX_FLAGS_RELEASE=/MT /MP'
       ]
 
       await cmake([...flags, '..'], { cwd: buildPath, env })
