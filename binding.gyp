@@ -23,6 +23,11 @@
         ],
       }],
       ['OS=="win"', {
+        'msvs_settings': {
+          'VCLinkerTool': {
+            'AdditionalOptions': [ '/NODEFAULTLIB:LIBCMT' ],
+          },
+        },
         "libraries": [
           "<(module_root_dir)/deps/transmission/build/libtransmission/Release/transmission.lib",
           "<(module_root_dir)/deps/transmission/build/third-party/dht.bld/pfx/lib/dht.lib",
