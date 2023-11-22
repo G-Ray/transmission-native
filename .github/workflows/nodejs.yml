@@ -15,38 +15,36 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Cache vcpkg
-      uses: actions/cache@v3
-      env:
-        # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md#environment-variables
-        VCPKG_INSTALLATION_ROOT: C:\vcpkg
-        cache-name: cache-vcpkg
-      with:
-        path: ${{ env.VCPKG_INSTALLATION_ROOT }}
-        key: ${{ runner.os }}-${{ env.cache-name }}
-      if: ${{ matrix.os == 'windows-latest' }}
-    - name: Install linux deps
-      run: sudo apt update && sudo apt install -y libcurl4-openssl-dev
-      if: ${{ matrix.os == 'ubuntu-latest' }}
+      - name: Cache vcpkg
+        uses: actions/cache@v3
+        env:
+          # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md#environment-variables
+          VCPKG_INSTALLATION_ROOT: C:\vcpkg
+          cache-name: cache-vcpkg
+        with:
+          path: ${{ env.VCPKG_INSTALLATION_ROOT }}
+          key: ${{ runner.os }}-${{ env.cache-name }}
+        if: ${{ matrix.os == 'windows-latest' }}
+      - name: Install linux deps
+        run: sudo apt update && sudo apt install -y libcurl4-openssl-dev
+        if: ${{ matrix.os == 'ubuntu-latest' }}
 
-    - name: Install windows deps
-      run: vcpkg install curl openssl --triplet=x64-windows-static
-      if: ${{ matrix.os == 'windows-latest' }}
-    - name: Use Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18.x
-    - run: npm run fetch-deps
-    - run: npm run build-transmission
-    - run: npm i
-    - run: npm test
-    - run: npm run prebuild
-    - uses: actions/upload-artifact@v3
-      with:
-        name: ${{ matrix.os }}
-        path: ./prebuilds
+      - name: Install windows deps
+        run: vcpkg install curl openssl --triplet=x64-windows-static
+        if: ${{ matrix.os == 'windows-latest' }}
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - run: npm i
+      - run: npm test
+      - run: npm run prebuild
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}
+          path: ./prebuilds
   build-aarch64:
     # The host should always be Linux
     runs-on: ubuntu-latest
@@ -71,8 +69,6 @@ jobs:
             apt install -y nodejs
             # Build
             git config --global --add safe.directory '*'
-            npm run fetch-deps
-            npm run build-transmission
             npm i
             npm test
             npm run prebuild-arm64

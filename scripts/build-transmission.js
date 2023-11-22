@@ -29,7 +29,8 @@ const COMMON_CMAKE_FLAGS = [
 ]
 
 const { env } = process
-const buildPath = path.join(__dirname, '../deps/transmission/build')
+const transmissionPath = path.join(__dirname, '../deps/transmission')
+const buildPath = path.join(transmissionPath, 'build')
 
 const runCommand = async (command, args = [], options = {}) => {
   return new Promise((resolve, reject) => {
@@ -39,14 +40,30 @@ const runCommand = async (command, args = [], options = {}) => {
   })
 }
 
-const cmake = (...args) => runCommand('cmake', ...args)
+// Clone transmission repo
+const clone = async () => {
+  if (fs.existsSync(transmissionPath)) return
 
-if (!fs.existsSync(buildPath)) {
-  fs.mkdirSync(buildPath)
+  await runCommand('git', [
+    'clone',
+    '-b',
+    '4.0.3-transmission-native',
+    '--recurse-submodules',
+    'https://github.com/G-Ray/transmission.git',
+    transmissionPath
+  ])
 }
+
+const cmake = (...args) => runCommand('cmake', ...args)
 
 const build = async () => {
   const osType = os.type()
+
+  await clone()
+
+  if (!fs.existsSync(buildPath)) {
+    fs.mkdirSync(buildPath)
+  }
 
   if (osType === 'Linux') {
     const flags = [
