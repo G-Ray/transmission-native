@@ -1,3 +1,0 @@
-[submodule "deps/transmission"]
-	path = deps/transmission
-	url = https://github.com/G-Ray/transmission.git
