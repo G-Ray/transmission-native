@@ -43,7 +43,7 @@ jobs:
       - run: npm run prebuild
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}
+          name: prebuilds
           path: ./prebuilds
   build-aarch64:
     # The host should always be Linux
@@ -74,5 +74,5 @@ jobs:
             npm run prebuild-arm64
       - uses: actions/upload-artifact@v3
         with:
-          name: ubuntu-latest
+          name: prebuilds
           path: ./prebuilds
