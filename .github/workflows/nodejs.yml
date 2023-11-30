@@ -45,10 +45,10 @@ jobs:
         with:
           name: prebuilds
           path: ./prebuilds
-  build-aarch64:
+  build-arm64:
     # The host should always be Linux
     runs-on: ubuntu-latest
-    name: Build on aarch64
+    name: build-arm64 (ubuntu-latest)
     steps:
       - uses: actions/checkout@v3
       - uses: uraimo/run-on-arch-action@v2
