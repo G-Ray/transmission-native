@@ -47,7 +47,7 @@ const clone = async () => {
   await runCommand('git', [
     'clone',
     '-b',
-    '4.0.3-transmission-native',
+    '4.0.x-pikatorrent',
     '--recurse-submodules',
     'https://github.com/G-Ray/transmission.git',
     transmissionPath
