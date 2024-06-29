@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "napi-macros": "^2.2.2",
-    "node-gyp-build": "^4.6.0"
+    "node-gyp-build": "^4.8.1"
   },
   "devDependencies": {
-    "prebuildify": "^5.0.1",
-    "standard": "^17.0.0"
+    "prebuildify": "^6.0.1",
+    "standard": "^17.1.0"
   }
 }
