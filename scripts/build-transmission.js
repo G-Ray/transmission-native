@@ -4,6 +4,8 @@ const fs = require('node:fs')
 const path = require('node:path')
 const { spawn } = require('node:child_process')
 
+const COMMIT_SHA = '305dc755fe6537f3325f14c9a981b52204688cb3'
+
 const NPROCESSORS = os.availableParallelism()
 const COMMON_CMAKE_FLAGS = [
   '-DCMAKE_BUILD_TYPE=Release',
@@ -47,11 +49,13 @@ const clone = async () => {
   await runCommand('git', [
     'clone',
     '-b',
-    '4.0.6-pikatorrent',
-    '--recurse-submodules',
+    '4.0.x-pikatorrent',
+    '--single-branch',
     'https://github.com/G-Ray/transmission.git',
     transmissionPath
   ])
+  await runCommand('git', ['checkout', COMMIT_SHA], { cwd: transmissionPath })
+  await runCommand('git', ['submodule', 'update', '--init', '--recursive'], { cwd: transmissionPath })
 }
 
 const cmake = (...args) => runCommand('cmake', ...args)
