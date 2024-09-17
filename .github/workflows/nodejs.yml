@@ -11,12 +11,10 @@ jobs:
   build-x64:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-
     steps:
       - uses: actions/checkout@v3
-
       - name: Cache vcpkg
         uses: actions/cache@v3
         env:
@@ -30,7 +28,9 @@ jobs:
       - name: Install linux deps
         run: sudo apt update && sudo apt install -y libcurl4-openssl-dev
         if: ${{ matrix.os == 'ubuntu-latest' }}
-
+      - name: Install macos deps
+        run: sudo -H pip install setuptools
+        if: ${{ matrix.os == 'macos-latest' }}
       - name: Install windows deps
         run: vcpkg install curl openssl --triplet=x64-windows-static
         if: ${{ matrix.os == 'windows-latest' }}
